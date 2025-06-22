@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -15,6 +17,26 @@ class LoginFormState extends State<LoginForm> {
 
   bool obscure = true;
 
+  Future<void> signUpNewUser(String email, String password) async {
+    try {
+      await Supabase.instance.client.auth.signInWithPassword(
+        password: password,
+        email: email,
+      );
+
+      ShadToaster.of(context).show(ShadToast(title: Text('Login Success')));
+    } catch (e) {
+      log(e.toString());
+      if (e is AuthApiException) {
+        if (e.code == "invalid_credentials") {
+          ShadToaster.of(
+            context,
+          ).show(ShadToast.destructive(title: Text('Invalid credentials.')));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ShadForm(
@@ -26,22 +48,23 @@ class LoginFormState extends State<LoginForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ShadInputFormField(
-              id: 'username',
-              label: const Text('Username'),
+              id: 'email',
+              label: const Text('Email'),
               leading: const Padding(
                 padding: EdgeInsets.all(4.0),
                 child: Icon(LucideIcons.user),
               ),
-              placeholder: const Text('Enter your username'),
+              placeholder: const Text('Enter your Email'),
               validator: (v) {
-                if (v.length < 2) {
-                  return 'Username must be at least 2 characters.';
+                if (!v.contains('@')) {
+                  return 'Invalid email.';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 15),
-            ShadInput(
+            ShadInputFormField(
+              id: 'password',
               placeholder: const Text('Enter your password'),
               obscureText: obscure,
               leading: const Padding(
@@ -75,11 +98,10 @@ class LoginFormState extends State<LoginForm> {
               child: Text('Sign In', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 if (formKey.currentState!.saveAndValidate()) {
-                  print(
-                    'validation succeeded with ${formKey.currentState!.value}',
-                  );
+                  var value = formKey.currentState!.value;
+                  signUpNewUser(value['email'], value['password']);
                 } else {
-                  print('validation failed');
+                  log('validation failed');
                 }
               },
             ),
@@ -96,8 +118,28 @@ class LoginFormState extends State<LoginForm> {
                 iosClientId: dotenv.get('WEBCLIENT_ID'),
               ),
               // redirectUrl: kIsWeb ? null : 'io.mydomain.myapp://callback',
-              onSuccess: (Session response) {},
-              onError: (error) {},
+              onSuccess: (Session response) {
+                print({"user: ", response.user});
+              },
+              onError: (error) {
+                print({"error: ", error});
+              },
+            ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.center,
+              child: Text.rich(
+                TextSpan(
+                  style: ShadTheme.of(context).textTheme.muted,
+                  text: "Don't have account? ",
+                  children: [
+                    TextSpan(
+                      text: "Register",
+                      style: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
