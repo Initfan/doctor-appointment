@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
+
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => LoginFormState();
+}
+
+class LoginFormState extends State<LoginForm> {
+  final formKey = GlobalKey<ShadFormState>();
+
+  bool obscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadForm(
+      key: formKey,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 350),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ShadInputFormField(
+              id: 'username',
+              label: const Text('Username'),
+              leading: const Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Icon(LucideIcons.user),
+              ),
+              placeholder: const Text('Enter your username'),
+              validator: (v) {
+                if (v.length < 2) {
+                  return 'Username must be at least 2 characters.';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 15),
+            ShadInput(
+              placeholder: const Text('Enter your password'),
+              obscureText: obscure,
+              leading: const Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Icon(LucideIcons.lock),
+              ),
+              trailing: ShadButton(
+                width: 24,
+                height: 24,
+                padding: EdgeInsets.zero,
+                leading: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
+                onPressed: () {
+                  setState(() => obscure = !obscure);
+                },
+              ),
+            ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Forgot Passowrd',
+                style: ShadTheme.of(
+                  context,
+                ).textTheme.small.copyWith(color: Colors.blueAccent),
+              ),
+            ),
+            const SizedBox(height: 25),
+            ShadButton(
+              width: double.maxFinite,
+              backgroundColor: Colors.blue,
+              child: Text('Sign In', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                if (formKey.currentState!.saveAndValidate()) {
+                  print(
+                    'validation succeeded with ${formKey.currentState!.value}',
+                  );
+                } else {
+                  print('validation failed');
+                }
+              },
+            ),
+            ShadSeparator.horizontal(
+              thickness: 4,
+              margin: EdgeInsets.symmetric(vertical: 20),
+              radius: BorderRadius.all(Radius.circular(4)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
