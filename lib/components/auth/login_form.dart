@@ -152,16 +152,19 @@ class LoginFormState extends State<LoginForm> {
                     SizedBox(height: 15),
                     Align(
                       alignment: Alignment.center,
-                      child: Text.rich(
-                        TextSpan(
-                          style: ShadTheme.of(context).textTheme.muted,
-                          text: "Don't have account? ",
-                          children: [
-                            TextSpan(
-                              text: "Register",
-                              style: TextStyle(color: Colors.blueAccent),
-                            ),
-                          ],
+                      child: GestureDetector(
+                        onTap: () => context.go('/auth/register'),
+                        child: Text.rich(
+                          TextSpan(
+                            style: ShadTheme.of(context).textTheme.muted,
+                            text: "Don't have account? ",
+                            children: [
+                              TextSpan(
+                                text: "Register",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

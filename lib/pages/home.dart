@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
             child: Text("Logout"),
             onPressed: () async {
               await Supabase.instance.client.auth.signOut();
-              context.go('/login');
+              context.go('/auth/login');
             },
           ),
         ],
