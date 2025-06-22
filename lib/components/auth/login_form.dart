@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -85,6 +87,17 @@ class LoginFormState extends State<LoginForm> {
               thickness: 4,
               margin: EdgeInsets.symmetric(vertical: 20),
               radius: BorderRadius.all(Radius.circular(4)),
+            ),
+            SupaSocialsAuth(
+              socialProviders: [OAuthProvider.google, OAuthProvider.apple],
+              colored: true,
+              nativeGoogleAuthConfig: NativeGoogleAuthConfig(
+                webClientId: dotenv.get('WEBCLIENT_ID'),
+                iosClientId: dotenv.get('WEBCLIENT_ID'),
+              ),
+              // redirectUrl: kIsWeb ? null : 'io.mydomain.myapp://callback',
+              onSuccess: (Session response) {},
+              onError: (error) {},
             ),
           ],
         ),
