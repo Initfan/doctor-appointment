@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
@@ -17,16 +18,15 @@ class LoginFormState extends State<LoginForm> {
 
   bool obscure = true;
 
-  Future<void> signUpNewUser(String email, String password) async {
+  Future<void> signInUser(String email, String password) async {
     try {
       await Supabase.instance.client.auth.signInWithPassword(
         password: password,
         email: email,
       );
 
-      ShadToaster.of(context).show(ShadToast(title: Text('Login Success')));
+      GoRouter.of(context).pushReplacement('/');
     } catch (e) {
-      log(e.toString());
       if (e is AuthApiException) {
         if (e.code == "invalid_credentials") {
           ShadToaster.of(
@@ -112,14 +112,15 @@ class LoginFormState extends State<LoginForm> {
                     ShadButton(
                       width: double.maxFinite,
                       backgroundColor: Colors.blue,
+                      enabled: formKey.currentState?.enabled ?? true,
                       child: Text(
                         'Sign In',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.saveAndValidate()) {
                           var value = formKey.currentState!.value;
-                          signUpNewUser(value['email'], value['password']);
+                          signInUser(value['email'], value['password']);
                         } else {
                           log('validation failed');
                         }
