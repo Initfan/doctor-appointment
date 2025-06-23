@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:appointment/components/auth/register_form.dart';
 import 'package:appointment/components/google_signin.dart';
+import 'package:appointment/utils/supabase.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -20,10 +22,7 @@ class LoginFormState extends State<LoginForm> {
 
   Future<void> signInUser(String email, String password) async {
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        password: password,
-        email: email,
-      );
+      await supabase.auth.signInWithPassword(password: password, email: email);
 
       GoRouter.of(context).pushReplacement('/');
     } catch (e) {
@@ -32,6 +31,13 @@ class LoginFormState extends State<LoginForm> {
           ShadToaster.of(
             context,
           ).show(ShadToast.destructive(title: Text('Invalid credentials.')));
+        }
+        if (e.code == "email_not_confirmed") {
+          ShadToaster.of(context).show(
+            ShadToast.destructive(
+              title: Text('Confirm the email, check your inbox.'),
+            ),
+          );
         }
       }
     }
@@ -157,7 +163,14 @@ class LoginFormState extends State<LoginForm> {
                         Align(
                           alignment: Alignment.center,
                           child: GestureDetector(
-                            onTap: () => context.go('/auth/register'),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterForm(),
+                                ),
+                              );
+                            },
                             child: Text.rich(
                               TextSpan(
                                 style: ShadTheme.of(context).textTheme.muted,
