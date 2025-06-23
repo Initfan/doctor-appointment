@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.appointment">
     <application
         android:label="appointment"
         android:name="${applicationName}"
@@ -28,7 +28,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="example.com" />
+                <data android:scheme="http" android:host="com.example.appointment" />
                 <data android:scheme="https" />
             </intent-filter>
         </activity>
