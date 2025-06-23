@@ -5,9 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key, required this.phoneNumber});
-
-  final String phoneNumber;
+  const RegisterForm({super.key});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -21,7 +19,6 @@ class _RegisterFormState extends State<RegisterForm> {
     if (formKey.currentState!.saveAndValidate()) {
       var values = formKey.currentState?.value;
       Supabase.instance.client.auth.signUp(
-        phone: widget.phoneNumber,
         password: values?['password'],
         email: values?['email'],
         data: {'username': values?['username']},
