@@ -1,7 +1,10 @@
+import 'package:appointment/components/home/event.dart';
+import 'package:appointment/components/home/header.dart';
+import 'package:appointment/components/home/searching.dart';
+import 'package:appointment/components/home/service_list.dart';
+import 'package:appointment/utils/supabase.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,21 +14,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() => user = supabase.auth.currentUser!);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ShadApp(
-      home: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Home Page'),
-          ShadButton(
-            child: Text("Logout"),
-            onPressed: () async {
-              await Supabase.instance.client.auth.signOut();
-              context.go('/auth/login');
-            },
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 20,
+                  children: [
+                    Header(user: user),
+                    Searching(),
+                    ServiceList(),
+                  ],
+                ),
+              ),
+              Event(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
