@@ -33,6 +33,7 @@ class BookAppointment extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Searching(),
+                SizedBox(height: 15),
                 ListView.builder(
                   itemCount: 4,
                   shrinkWrap: true,
@@ -59,6 +60,7 @@ class BookAppointment extends StatelessWidget {
                     );
                   },
                 ),
+                SizedBox(height: 5),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

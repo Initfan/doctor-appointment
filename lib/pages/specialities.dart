@@ -1,3 +1,4 @@
+import 'package:appointment/components/doctor/doctor_item.dart';
 import 'package:appointment/components/home/searching.dart';
 import 'package:appointment/pages/doctor.dart';
 import 'package:flutter/material.dart';
@@ -43,44 +44,42 @@ class Specialities extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(height: 20),
                 ListView.builder(
                   itemCount: 4,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DoctorPage(speciality: 'Ear, Nose & Throat'),
-                        ),
-                      ),
-                      contentPadding: EdgeInsets.all(0),
-                      leading: Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade800,
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        child: Image.asset('assets/images/doctor-1.png'),
-                      ),
-                      title: Text(
-                        'Dr. Patricia Ahoy',
-                        style: shadcn.textTheme.large,
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Ear, Nose & Throat",
-                            style: shadcn.textTheme.muted.copyWith(
-                              fontSize: 12,
-                            ),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DoctorPage(speciality: 'Ear, Nose & Throat'),
                           ),
-                          Text('IDR 120.000', style: shadcn.textTheme.large),
-                        ],
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DoctorItem(
+                              image: 'assets/images/doctor-1.png',
+                              name: 'Dr Patricia Ahoy',
+                              price: 120000,
+                              speciality: speciality,
+                            ),
+                            Row(
+                              spacing: 5,
+                              children: [
+                                Icon(Icons.star, color: Colors.yellow),
+                                Text("4.5", style: shadcn.textTheme.muted),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
                     );
                   },
                 ),
