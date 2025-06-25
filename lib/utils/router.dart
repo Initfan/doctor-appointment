@@ -1,15 +1,14 @@
 import 'package:appointment/components/auth/login_form.dart';
 import 'package:appointment/components/auth/register.dart';
-import 'package:appointment/pages/home.dart';
+import 'package:appointment/pages.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => Pages(),
       redirect: (context, state) {
         if (Supabase.instance.client.auth.currentUser == null) {
           return '/auth/register';

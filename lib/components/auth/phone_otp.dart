@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:appointment/components/term_policies.dart';
-import 'package:appointment/pages/home.dart';
+import 'package:appointment/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
@@ -19,7 +19,7 @@ class _PhoneOtpState extends State<PhoneOtp> {
   final formKey = GlobalKey<ShadFormState>();
   int _seconds = 60;
   late String _inputedToken;
-  String _invalidCode = '';
+  final String _invalidCode = '';
   Timer? _timer;
 
   @override
@@ -63,7 +63,7 @@ class _PhoneOtpState extends State<PhoneOtp> {
       _timer?.cancel();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => Pages()),
       );
     } catch (e) {
       // Print to debug console
