@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class Searching extends StatelessWidget {
-  const Searching({super.key});
+  const Searching({super.key, this.hintText});
+
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class Searching extends StatelessWidget {
                   color: shadcn.colorScheme.mutedForeground,
                 ),
                 hintStyle: shadcn.textTheme.muted,
-                hintText: 'symptoms, diseases...',
+                hintText: hintText ?? 'symptoms, diseases...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
