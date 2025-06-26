@@ -1,4 +1,4 @@
-import 'package:appointment/components/doctor/doctor_item.dart';
+import 'package:appointment/components/doctor/card.dart';
 import 'package:appointment/components/home/searching.dart';
 import 'package:appointment/pages/doctor.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class Specialities extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DoctorItem(
+                            DoctorCard(
                               image: 'assets/images/doctor-1.png',
                               name: 'Dr Patricia Ahoy',
                               price: 120000,
